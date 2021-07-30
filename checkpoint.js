@@ -145,31 +145,24 @@ LinkedList.prototype.switchPos = function(pos1, pos2){
   if (pos1 < 0) return false;
   if (pos2 >= this.size()) return false;
 
-  //let n1, n2, pos = 0;
-  //let currentNode = this.head;
-  //while (true) {
-    //if (pos === pos1) {
-      //n1 = currentNode;
-    //} else if (pos === pos2) {
-      //n2 = currentNode;
-      //break;
-    //}
-    //++pos;
-    //currentNode = currentNode.next;
-  //}
-  //// cambia el primer nodo
-  //currentNode = this.head;
-  //for (let i = 0; i < pos1; ++i) currentNode = currentNode.next;
-  //let temp = currentNode.next;
-  //currentNode = n2;
-  //currentNode.next = temp;
+  let pos = 0;
+  let currentNode = this.head;
+  let nodeOne, nodeTwo;
 
-  //// cambia el segundo nodo
-  //currentNode = this.head;
-  //for (let i = 0; i < pos2; ++i) currentNode = currentNode.next;
-  //let temp = currentNode.next;
-  //currentNode = n1;
-  //currentNode.next = temp;
+  while (true) {
+    if (pos === pos1) {
+      nodeOne = currentNode;
+    } else if (pos === pos2) {
+      nodeTwo = currentNode;
+      break;
+    }
+    ++pos;
+    currentNode = currentNode.next;
+  }
+
+  let temp = nodeOne.value;
+  nodeOne.value = nodeTwo.value;
+  nodeTwo.value = temp;
 
   return true;
 }
