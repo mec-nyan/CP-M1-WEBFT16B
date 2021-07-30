@@ -243,25 +243,27 @@ class Player {
   constructor(mazo) {
     this.mazo = mazo;
     this.castillo = 100;
-    this.ataque = null;
-    this.defensa = null;
+    this.primera = null;
+    this.segunda = null;
   }
 
   levantar() {
     if (this.mazo.size() > 0) {
-      let mano = this.mazo.dequeue();
-      this.ataque = mano.attack;
-      this.defensa = mano.defense;
+      this.primera = this.mazo.dequeue();
+      this.segunda = this.mazo.dequeue();
       return true;
     }
     return false;
   }
 
-  damage(p) {
-    if (p.ataque > this.defensa) {
-      this.castillo -= p.ataque - this.defensa;
+    hit(p) {
+      let attack = this.primera.attack;
+      let defense = p.segunda.defense;
+      if (attack > defense) {
+        let damage = attack - defense;
+        p.castillo -= damage;
+      }
     }
-  }
 }
 
 var cardGame = function(playerOneCards, playerTwoCards){
@@ -270,8 +272,8 @@ var cardGame = function(playerOneCards, playerTwoCards){
   let p2 = new Player(playerTwoCards);
 
   while(p1.levantar() && p2.levantar()) {
-    p2.damage(p1);
-    p1.damage(p2);
+    p2.hit(p1);
+    p1.hit(p2);
 
     if (p1.castillo <= 0 && p2.castillo > 0) {
       return "PLAYER TWO";
@@ -280,8 +282,9 @@ var cardGame = function(playerOneCards, playerTwoCards){
       return "PLAYER ONE";
     }
   }
-  if (p1.castillo > p2.castillo) return "PLAYER TWO";
-  if (p2.castillo > p1.castillo) return "PLAYER ONE";
+
+  if (p1.castillo > p2.castillo) return "PLAYER ONE";
+  if (p1.castillo < p2.castillo) return "PLAYER TWO";
   return "TIE";
 
 }
