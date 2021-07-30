@@ -246,8 +246,50 @@ var mergeLinkedLists = function(linkedListOne, linkedListTwo){
 // finalizar el juego.
 
 
+class Player {
+  constructor(mazo) {
+    this.mazo = mazo;
+    this.castillo = 100;
+    this.ataque = null;
+    this.defensa = null;
+  }
+
+  levantar() {
+    if (this.mazo.size() > 0) {
+      let mano = this.mazo.dequeue();
+      this.ataque = mano.attack;
+      this.defensa = mano.defense;
+      return true;
+    }
+    return false;
+  }
+
+  damage(p) {
+    if (p.ataque > this.defensa) {
+      this.castillo -= p.ataque - this.defensa;
+    }
+  }
+}
+
 var cardGame = function(playerOneCards, playerTwoCards){
   // Tu código aca:
+  let p1 = new Player(playerOneCards);
+  let p2 = new Player(playerTwoCards);
+
+  while(p1.levantar() && p2.levantar()) {
+    p2.damage(p1);
+    p1.damage(p2);
+
+    if (p1.castillo <= 0 && p2.castillo > 0) {
+      return "PLAYER TWO";
+    }
+    if (p2.castillo <= 0 && p1.castillo > 0) {
+      return "PLAYER ONE";
+    }
+  }
+  if (p1.castillo > p2.castillo) return "PLAYER TWO";
+  if (p2.castillo > p1.castillo) return "PLAYER ONE";
+  return "TIE";
 
 }
 
