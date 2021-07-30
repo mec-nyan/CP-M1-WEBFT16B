@@ -39,7 +39,18 @@ const {
 
 var isAncestor = function(genealogyTree, ancestor, descendant){
   // Tu código aca:
-
+  // Es ancestro directo?
+  for (let d of genealogyTree[ancestor]) {
+    if (d === descendant) {
+      return true;
+    }
+    for (let e of (genealogyTree[d])) {
+      if (e === descendant) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 
@@ -77,7 +88,13 @@ var isAncestor = function(genealogyTree, ancestor, descendant){
 
 function secuenciaHenry(obj, n) {
   // Tu código aca:
+  if (n < 0) return null;
+  // f(n) = f(n-1) x f(n-2) - f(n-2)
+  
+  if (n === 0) return obj.first;
+  if (n === 1) return Object.keys(obj).length;
 
+  return secuenciaHenry(obj, n - 1) * secuenciaHenry(obj, n - 2) - secuenciaHenry(obj, n - 2);
 }
 
 // ---------------------
@@ -98,7 +115,13 @@ function secuenciaHenry(obj, n) {
 
 LinkedList.prototype.size = function(){
   // Tu código aca:
-
+  let count = 0;
+  let currentNode = this.head;
+  while (currentNode) {
+    ++count;
+    currentNode = currentNode.next;
+  }
+  return count;
 }
 
 
@@ -119,7 +142,36 @@ LinkedList.prototype.size = function(){
 
 LinkedList.prototype.switchPos = function(pos1, pos2){
   // Tu código aca:
+  if (pos1 < 0) return false;
+  if (pos2 >= this.size()) return false;
 
+  //let n1, n2, pos = 0;
+  //let currentNode = this.head;
+  //while (true) {
+    //if (pos === pos1) {
+      //n1 = currentNode;
+    //} else if (pos === pos2) {
+      //n2 = currentNode;
+      //break;
+    //}
+    //++pos;
+    //currentNode = currentNode.next;
+  //}
+  //// cambia el primer nodo
+  //currentNode = this.head;
+  //for (let i = 0; i < pos1; ++i) currentNode = currentNode.next;
+  //let temp = currentNode.next;
+  //currentNode = n2;
+  //currentNode.next = temp;
+
+  //// cambia el segundo nodo
+  //currentNode = this.head;
+  //for (let i = 0; i < pos2; ++i) currentNode = currentNode.next;
+  //let temp = currentNode.next;
+  //currentNode = n1;
+  //currentNode.next = temp;
+
+  return true;
 }
 
 // EJERCICIO 5
@@ -135,7 +187,20 @@ LinkedList.prototype.switchPos = function(pos1, pos2){
 // Continuando con el nodo 2 de la lista 2, conectandose con el nodo 2 de la lista 2.
 var mergeLinkedLists = function(linkedListOne, linkedListTwo){
   // Tu código aca:
+  let newList = new LinkedList();
 
+  let currentNodeOne = linkedListOne.head;
+  let currentNodeTwo = linkedListTwo.head;
+
+  while (currentNodeOne) {
+    newList.add(currentNodeOne.value);
+    newList.add(currentNodeTwo.value);
+
+    currentNodeOne = currentNodeOne.next;
+    currentNodeTwo = currentNodeTwo.next;
+  }
+
+  return newList;
 }
 
 
@@ -207,7 +272,9 @@ var cardGame = function(playerOneCards, playerTwoCards){
 
 BinarySearchTree.prototype.height = function(){
   // Tu código aca:
-
+  let leftHeight = (this.left) ? this.left.height() : 0;
+  let rightHeight = (this.right) ? this.right.height() : 0;
+  return 1 + Math.max(leftHeight, rightHeight);
 }
 
 
@@ -229,7 +296,24 @@ BinarySearchTree.prototype.height = function(){
 
 var binarySearch = function (array, target) {
   // Tu código aca:
+  if (!array.includes(target)) return -1;
 
+  let start = 0, end = array.length - 1;
+  let pos = Math.floor( (start + end) / 2 );
+
+  while (pos >= 0 && pos < array.length) {
+    if (array[pos] === target) {
+      return pos;
+    }
+
+    if (array[pos] < target) {
+      start = pos + 1;
+    } else if (array[pos] > target) {
+      end = pos - 1;
+    }
+    pos = Math.floor( (start + end) / 2 );
+  }
+  return -1;
 }
 
 // EJERCICIO 9
