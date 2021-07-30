@@ -341,7 +341,19 @@ var binarySearch = function (array, target) {
 
 var specialSort = function(array, orderFunction) {
   // Tu código aca:
-
+  while (true) {
+      let swap = false;
+      for (let i = 0, j = 1; j < array.length; ++i, ++j) {
+          if (orderFunction(array[i], array[j]) === -1) {
+              let temp = array[i];
+              array[i] = array[j];
+              array[j] = temp;
+              swap = true;
+          }
+      }
+      if (!swap) break;
+  }
+  return array;
 }
 
 // ----- Closures -----
@@ -374,7 +386,16 @@ var specialSort = function(array, orderFunction) {
 
 function closureDetect(symptoms, min) {
   // Tu código aca:
-
+  return function(person) {
+    let count = 0;
+    for (s of person.symptoms) {
+      if (symptoms.includes(s)) {
+        ++count;
+      }
+    }
+    if (count >= min) return true;
+    return false;
+  }
 }
 
 // -------------------
