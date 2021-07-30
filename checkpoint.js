@@ -331,12 +331,12 @@ BinarySearchTree.prototype.height = function(){
 
 var binarySearch = function (array, target) {
   // Tu código aca:
-  if (!array.includes(target)) return -1;
+  //if (!array.includes(target)) return -1;
 
   let start = 0, end = array.length - 1;
   let pos = Math.floor( (start + end) / 2 );
 
-  while (pos >= 0 && pos < array.length) {
+  while (start < end) {
     if (array[pos] === target) {
       return pos;
     }
